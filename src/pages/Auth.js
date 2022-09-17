@@ -33,7 +33,7 @@ export default function Auth() {
 
   return (
     <Layout>
-      <main className="max-w-2xl mx-auto">
+      <main className="max-w-2xl mx-auto px-5">
         <h1 className="text-4xl font-extrabold py-5">Login</h1>
         <button className="btn btn-block my-2" onClick={signInWithGoogle}>
           <svg
