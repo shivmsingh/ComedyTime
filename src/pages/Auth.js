@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useContext, useEffect } from "react";
 import { supabase } from "../config/supabaseClient";
 import Layout from "../components/Layout";
+import { useNavigate } from "react-router-dom";
+import { SessionContext } from "../App";
 
 export default function Auth() {
-  const [discord, setDiscord] = useState(null);
+  const navigate = useNavigate();
+  const { session } = useContext(SessionContext);
+  useEffect(() => {
+    if (session) {
+      navigate("/");
+    }
+  }, [session]);
 
   async function signInWithGoogle() {
     const { data, error } = await supabase.auth.signInWithOAuth({
@@ -27,7 +35,6 @@ export default function Auth() {
     <Layout>
       <main className="max-w-2xl mx-auto">
         <h1 className="text-4xl font-extrabold py-5">Login</h1>
-        {discord}
         <button className="btn btn-block my-2" onClick={signInWithGoogle}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
