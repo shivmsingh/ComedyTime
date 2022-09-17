@@ -98,7 +98,7 @@ const Joke = () => {
           <h2 className="font-bold text-3xl my-10">
             More jokes by <span className="text-accent">{joke.name}</span>
           </h2>
-          <div className="flex">
+          <div className="flex flex-wrap">
             {relatedJokesUser?.map((joke) => (
               <div className="lg:w-1/3 md:w-1/2 w-full flex flex-col p-5">
                 <JokeCard key={joke.id} joke={joke} displayControls={false} />
