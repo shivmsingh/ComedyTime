@@ -15,9 +15,7 @@
     "react-scripts": "5.0.1",
     "theme-change": "^2.2.0",
     "unique-names-generator": "^4.7.1",
-    "unique-username-generator": "^1.1.1",
-    "web-vitals": "^2.1.4",
-    "zustand": "^4.1.1"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
