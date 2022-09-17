@@ -98,10 +98,13 @@ const Create = () => {
             id="category"
             onChange={(e) => setCategory(e.target.value)}
           >
-            <option value="kids">Kids</option>
-            <option value="dark">Dark</option>
-            <option value="pun">Pun</option>
             <option value="programming">Programming</option>
+            <option value="science">Science</option>
+            <option value="food">Food</option>
+            <option value="sports">Sports</option>
+            <option value="gaming">Gaming</option>
+            <option value="animal">Animal</option>
+            <option value="school">School</option>
           </select>
           {session ? (
             <button className="btn btn-primary my-5">Create Joke</button>
