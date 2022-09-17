@@ -1,47 +1,26 @@
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import supabase from "../config/supabaseClient";
+import { supabase } from "../config/supabaseClient";
+import { SessionContext } from "../App";
 import Layout from "../components/Layout";
 
 const Update = () => {
-  const { id } = useParams();
+  const { session, username } = useContext(SessionContext);
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
   const [category, setCategory] = useState("kids");
+  const [userId, setUserId] = useState(null);
   const [formError, setFormError] = useState(null);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!title || !description || !name) {
-      setFormError("Please fill all the fields correctly");
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from("Jokes")
-      .update([{ title, description, name, category }])
-      .eq("id", id);
-
-    if (error) {
-      setFormError("Please fill all the fields correctly");
-    }
-
-    if (data) {
-      setFormError(null);
-      navigate("/");
-    }
-  };
 
   useEffect(() => {
     const fetchJoke = async () => {
       const { data, error } = await supabase
-        .from("Jokes")
+        .from("jokes")
         .select()
-        .eq("id", id)
+        .match({ id: id })
         .single();
 
       if (error) {
@@ -51,16 +30,48 @@ const Update = () => {
       if (data) {
         setTitle(data.title);
         setDescription(data.description);
-        setName(data.name);
         setCategory(data.category);
+        setUserId(data.user_id);
       }
     };
     fetchJoke();
   }, [id, navigate]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (session) {
+      if (!title || !description) {
+        setFormError("Please fill all the fields correctly");
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("jokes")
+        .update({
+          title,
+          description,
+          name: username,
+          category,
+          user_id: session.user.id,
+        })
+        .match({ id: id })
+        .select();
+
+      if (error) {
+        setFormError("Server Error! Please contact the administrator.");
+      }
+
+      if (data) {
+        setFormError(null);
+        navigate("/");
+      }
+    }
+  };
+
   return (
     <Layout>
-      <main className="max-w-2xl mx-auto">
+      <main className="max-w-2xl mx-auto px-5">
         <h1 className="text-4xl font-extrabold py-5">Update joke!</h1>
         <form onSubmit={handleSubmit} className="flex flex-col">
           {formError && (
@@ -117,17 +128,13 @@ const Update = () => {
             <option value="pun">Pun</option>
             <option value="programming">Programming</option>
           </select>
-          <label className="label">
-            <span className="label-text text-lg">Name</span>
-          </label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            className="input input-bordered input-primary w-full"
-            onChange={(e) => setName(e.target.value)}
-          />
-          <button className="btn btn-primary my-5">Update Joke</button>
+          {session?.user.id === userId ? (
+            <button className="btn btn-primary my-5">Update Joke</button>
+          ) : (
+            <button className="btn btn-primary my-5" disabled="disabled">
+              You do not have the permission to edit this
+            </button>
+          )}
         </form>
       </main>
     </Layout>

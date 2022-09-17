@@ -1,45 +1,53 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../config/supabaseClient";
 import Layout from "../components/Layout";
-import supabase from "../config/supabaseClient";
+import { SessionContext } from "../App";
 
 const Create = () => {
+  const { session, username } = useContext(SessionContext);
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
   const [category, setCategory] = useState("kids");
   const [formError, setFormError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !title || !description) {
-      setFormError("Please fill all the fields correctly");
-      return;
-    }
+    if (session) {
+      if (!title || !description) {
+        setFormError("Please fill all the fields correctly");
+        return;
+      }
 
-    console.log(title, description, name, category);
+      const { data, error } = await supabase
+        .from("jokes")
+        .insert([
+          {
+            title,
+            description,
+            name: username,
+            category,
+            user_id: session.user.id,
+          },
+        ])
+        .select();
 
-    const { data, error } = await supabase
-      .from("Jokes")
-      .insert([{ title, description, name, category }]);
+      if (error) {
+        setFormError("Server Error! Contact the administrator.");
+      }
 
-    if (error) {
-      setFormError("Please fill all the fields correctly");
-      console.log(error);
-    }
-
-    if (data) {
-      console.log(data);
-      setFormError(null);
-      navigate("/");
+      if (data) {
+        setFormError(null);
+        navigate("/");
+      }
     }
   };
 
   return (
     <Layout>
-      <main className="max-w-2xl mx-auto">
+      <main className="max-w-2xl mx-auto px-5">
         <h1 className="text-4xl font-extrabold py-5">Post a joke!</h1>
         <form onSubmit={handleSubmit} className="flex flex-col">
           {formError && (
@@ -95,17 +103,13 @@ const Create = () => {
             <option value="pun">Pun</option>
             <option value="programming">Programming</option>
           </select>
-          <label className="label">
-            <span className="label-text text-lg">Name</span>
-          </label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            className="input input-bordered input-primary w-full"
-            onChange={(e) => setName(e.target.value)}
-          />
-          <button className="btn btn-primary my-5">Create Joke</button>
+          {session ? (
+            <button className="btn btn-primary my-5">Create Joke</button>
+          ) : (
+            <button className="btn btn-primary my-5" disabled="disabled">
+              Login to submit
+            </button>
+          )}
         </form>
       </main>
     </Layout>

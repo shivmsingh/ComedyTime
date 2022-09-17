@@ -1,12 +1,32 @@
-import { supabase } from "../config/supabaseClient";
 import { useState, useEffect } from "react";
-import JokeCard from "../components/JokeCard";
+import { supabase } from "../config/supabaseClient";
+import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
+import JokeCard from "../components/JokeCard";
 
-const Home = () => {
-  const [fetchError, setFetchError] = useState(null);
+const Profile = () => {
   const [jokes, setJokes] = useState(null);
   const [orderBy, setOrderBy] = useState("created_at");
+  const { username: user } = useParams();
+
+  useEffect(() => {
+    const fetchJokes = async () => {
+      const { data, error } = await supabase
+        .from("jokes")
+        .select()
+        .order(orderBy, { ascending: false })
+        .match({ name: user });
+      if (error) {
+        setJokes(null);
+      }
+      if (data) {
+        setJokes(data);
+      }
+    };
+    fetchJokes();
+  }, [orderBy, user]);
+
+  console.log(jokes);
 
   const handleDelete = (id) => {
     setJokes((prevJokes) => {
@@ -14,33 +34,13 @@ const Home = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchJokes = async () => {
-      const { data, error } = await supabase
-        .from("jokes")
-        .select()
-        .order(orderBy, { ascending: false });
-
-      if (error) {
-        setFetchError("Could not fetch the required joke!");
-        setJokes(null);
-        console.log(error);
-      }
-
-      if (data) {
-        setJokes(data);
-        setFetchError(null);
-      }
-    };
-
-    fetchJokes();
-  }, [orderBy]);
-
   return (
     <Layout>
-      {fetchError && <p>{fetchError}</p>}
       {jokes && (
         <main>
+          <h1 className="font-bold text-3xl my-10">
+            <span className="text-accent">{user}</span>'s Jokes
+          </h1>
           <div className="flex flex-col items-center justify-center">
             <h2 className="text-xl font-bold py-3">Order By:</h2>
             <div className="btn-group">
@@ -82,4 +82,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Profile;
