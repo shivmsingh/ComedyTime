@@ -51,7 +51,9 @@ const JokeCard = ({ joke, onDelete, displayControls }) => {
           <div className="badge badge-accent p-3 badge-outline">
             {joke.category}
           </div>
-          <h3>~{joke.name}</h3>
+          <Link to={`/user/${joke.name}`}>
+            <h3>~{joke.name}</h3>
+          </Link>
         </div>
         {displayControls && session?.user.id === joke.user_id && (
           <div className="card-actions justify-end">
