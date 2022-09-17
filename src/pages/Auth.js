@@ -3,30 +3,32 @@ import { supabase } from "../config/supabaseClient";
 import Layout from "../components/Layout";
 
 export default function Auth() {
+  const [discord, setDiscord] = useState(null);
+
+  async function signInWithGoogle() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+  }
+
   async function signInWithDiscord() {
-    const { user, session, error } = await supabase.auth.signIn({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "discord",
     });
   }
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
 
-  //   try {
-  //     setLoading(true);
-  //     const { error } = await supabase.auth.signInWithOtp({ email });
-  //     if (error) throw error;
-  //   } catch (error) {
-  //     alert(error.error_description || error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  async function signInWithGitHub() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "github",
+    });
+  }
 
   return (
     <Layout>
       <main className="max-w-2xl mx-auto">
         <h1 className="text-4xl font-extrabold py-5">Login</h1>
-        <button className="btn btn-block my-2">
+        {discord}
+        <button className="btn btn-block my-2" onClick={signInWithGoogle}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -54,7 +56,7 @@ export default function Auth() {
           </svg>
           Login with Discord
         </button>
-        <button className="btn btn-block my-2">
+        <button className="btn btn-block my-2" onClick={signInWithGitHub}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -68,25 +70,6 @@ export default function Auth() {
           </svg>
           Login with GitHub
         </button>
-        {/* <p className="">Sign in via magic link with your email below</p>
-        {loading ? (
-          "Sending magic link..."
-        ) : (
-          <form onSubmit={handleLogin}>
-            <label className="label">
-              <span className="label-text text-lg">Email</span>
-            </label>
-            <input
-              id="email"
-              type="email"
-              placeholder="Your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="input input-bordered input-primary w-full"
-            />
-            <button className="btn btn-primary my-5">Send magic link</button> */}
-        {/* </form> */}
-        {/* )} */}
       </main>
     </Layout>
   );
