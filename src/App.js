@@ -78,8 +78,6 @@ const App = () => {
     }
   }, [done]);
 
-  console.log(session, username);
-
   return (
     <SessionContext.Provider value={{ session, id, username }}>
       <BrowserRouter>
