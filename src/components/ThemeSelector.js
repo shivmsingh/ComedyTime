@@ -13,6 +13,7 @@ const ThemeSelector = () => {
       <option value="synthwave">Synthwave</option>
       <option value="valentine">Valentine</option>
       <option value="halloween">Halloween</option>
+      <option value="coffee">Coffee</option>
     </select>
   );
 };

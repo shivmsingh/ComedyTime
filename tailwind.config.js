@@ -6,6 +6,13 @@ module.exports = {
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
-    themes: ["dracula", "cupcake", "synthwave", "valentine", "halloween"],
+    themes: [
+      "dracula",
+      "cupcake",
+      "synthwave",
+      "valentine",
+      "halloween",
+      "coffee",
+    ],
   },
 };
