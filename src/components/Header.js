@@ -63,7 +63,7 @@ const Header = () => {
               className="normal-case text-2xl text-primary font-bold"
               to="/"
             >
-              Funny Jokes
+              Comedy Time
             </Link>
           </div>
           <div className="navbar-center hidden lg:flex">
