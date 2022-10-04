@@ -30,7 +30,7 @@ const JokeCard = ({ joke, onDelete, displayControls }) => {
             className="btn btn-circle btn-outline btn-primary btn-md"
             onClick={() => {
               navigator.clipboard.writeText(
-                `https://funnyjoke.netlify.app/${joke.id}`
+                `https://comedytime.netlify.app/${joke.id}`
               );
             }}
           >
