@@ -5,7 +5,7 @@ import { SessionContext } from "../App";
 import Layout from "../components/Layout";
 
 const Update = () => {
-  const { session, username } = useContext(SessionContext);
+  const { session } = useContext(SessionContext);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -51,7 +51,6 @@ const Update = () => {
         .update({
           title,
           description,
-          name: username,
           category,
           user_id: session.user.id,
         })

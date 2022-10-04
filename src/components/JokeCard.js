@@ -30,7 +30,7 @@ const JokeCard = ({ joke, onDelete, displayControls }) => {
             className="btn btn-circle btn-outline btn-primary btn-md"
             onClick={() => {
               navigator.clipboard.writeText(
-                `https://comedytime.netlify.app/${joke.id}`
+                `https://funnyjoke.netlify.app/${joke.id}`
               );
             }}
           >
@@ -51,8 +51,8 @@ const JokeCard = ({ joke, onDelete, displayControls }) => {
           <div className="badge badge-accent p-3 badge-outline">
             {joke.category}
           </div>
-          <Link to={`/user/${joke.name}`}>
-            <h3>~{joke.name}</h3>
+          <Link to={`/user/${joke?.profiles?.username}`}>
+            <h3>~{joke?.profiles?.username}</h3>
           </Link>
         </div>
         {displayControls && session?.user.id === joke.user_id && (

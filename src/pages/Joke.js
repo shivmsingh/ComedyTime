@@ -50,8 +50,8 @@ const Joke = () => {
     const fetchRelatedJokesUser = async () => {
       const { data, error } = await supabase
         .from("jokes")
-        .select()
-        .match({ name: joke.name })
+        .select("*, profiles!inner(*)")
+        .eq("profiles.username", joke.profiles.username)
         .limit(3);
 
       if (error) {
@@ -96,7 +96,8 @@ const Joke = () => {
             ))}
           </div>
           <h2 className="font-bold text-3xl my-10">
-            More jokes by <span className="text-accent">{joke.name}</span>
+            More jokes by{" "}
+            <span className="text-accent">{joke?.profiles?.name}</span>
           </h2>
           <div className="flex flex-wrap">
             {relatedJokesUser?.map((joke) => (

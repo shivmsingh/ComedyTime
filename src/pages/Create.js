@@ -5,7 +5,7 @@ import Layout from "../components/Layout";
 import { SessionContext } from "../App";
 
 const Create = () => {
-  const { session, username } = useContext(SessionContext);
+  const { session } = useContext(SessionContext);
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -27,7 +27,6 @@ const Create = () => {
           {
             title,
             description,
-            name: username,
             category,
             user_id: session.user.id,
           },

@@ -13,9 +13,10 @@ const Profile = () => {
     const fetchJokes = async () => {
       const { data, error } = await supabase
         .from("jokes")
-        .select()
-        .order(orderBy, { ascending: false })
-        .match({ name: user });
+        .select("*, profiles!inner(*)")
+        .eq("profiles.username", user)
+        .order(orderBy, { ascending: false });
+
       if (error) {
         setJokes(null);
       }
@@ -25,8 +26,6 @@ const Profile = () => {
     };
     fetchJokes();
   }, [orderBy, user]);
-
-  console.log(jokes);
 
   const handleDelete = (id) => {
     setJokes((prevJokes) => {
