@@ -96,8 +96,8 @@ const Joke = () => {
             ))}
           </div>
           <h2 className="font-bold text-3xl my-10">
-            More jokes by{" "}
-            <span className="text-accent">{joke?.profiles?.name}</span>
+            More jokes by
+            <span className="text-accent">{joke?.profiles?.username}</span>
           </h2>
           <div className="flex flex-wrap">
             {relatedJokesUser?.map((joke) => (
