@@ -14,7 +14,12 @@ const Joke = () => {
     const fetchJoke = async () => {
       const { data, error } = await supabase
         .from("jokes")
-        .select()
+        .select(
+          `*,
+        profiles(
+          username
+        )`
+        )
         .match({ id: id })
         .single();
 
@@ -33,7 +38,12 @@ const Joke = () => {
     const fetchRelatedJokes = async () => {
       const { data, error } = await supabase
         .from("jokes")
-        .select()
+        .select(
+          `*,
+        profiles(
+          username
+        )`
+        )
         .match({ category: joke.category })
         .limit(3);
 
@@ -50,8 +60,13 @@ const Joke = () => {
     const fetchRelatedJokesUser = async () => {
       const { data, error } = await supabase
         .from("jokes")
-        .select("*, profiles!inner(*)")
-        .eq("profiles.username", joke.profiles.username)
+        .select(
+          `*,
+        profiles(
+          username
+        )`
+        )
+        .match({ user_id: joke.user_id })
         .limit(3);
 
       if (error) {
@@ -60,6 +75,7 @@ const Joke = () => {
 
       if (data) {
         setRelatedJokesUser(data);
+        console.log(data);
       }
     };
     fetchRelatedJokesUser();
@@ -81,7 +97,7 @@ const Joke = () => {
                 <div className="badge badge-accent p-4 badge-outline text-lg">
                   {joke.category}
                 </div>
-                <h3 className="text-xl">~{joke.name}</h3>
+                <h3 className="text-xl">~{joke?.profiles?.username}</h3>
               </div>
             </div>
           </div>
@@ -96,7 +112,7 @@ const Joke = () => {
             ))}
           </div>
           <h2 className="font-bold text-3xl my-10">
-            More jokes by
+            More jokes by{" "}
             <span className="text-accent">{joke?.profiles?.username}</span>
           </h2>
           <div className="flex flex-wrap">

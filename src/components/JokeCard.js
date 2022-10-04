@@ -29,9 +29,7 @@ const JokeCard = ({ joke, onDelete, displayControls }) => {
           <button
             className="btn btn-circle btn-outline btn-primary btn-md"
             onClick={() => {
-              navigator.clipboard.writeText(
-                `https://comedytime.netlify.app/${joke.id}`
-              );
+              navigator.clipboard.writeText(`http://localhost:3000/${joke.id}`);
             }}
           >
             <svg
