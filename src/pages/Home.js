@@ -34,7 +34,6 @@ const Home = () => {
 
       if (data) {
         setJokes(data);
-        console.log(data[0].profiles.username);
         setFetchError(null);
       }
     };
@@ -72,9 +71,11 @@ const Home = () => {
           </div>
           <div className="flex flex-wrap">
             {jokes.map((joke) => (
-              <div className="lg:w-1/3 md:w-1/2 w-full flex flex-col p-5">
+              <div
+                key={joke.id}
+                className="lg:w-1/3 md:w-1/2 w-full flex flex-col p-5"
+              >
                 <JokeCard
-                  key={joke.id}
                   joke={joke}
                   onDelete={handleDelete}
                   displayControls={true}
