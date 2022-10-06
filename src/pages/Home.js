@@ -29,7 +29,6 @@ const Home = () => {
       if (error) {
         setFetchError("Could not fetch the required joke!");
         setJokes(null);
-        console.log(error);
       }
 
       if (data) {

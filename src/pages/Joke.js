@@ -75,7 +75,6 @@ const Joke = () => {
 
       if (data) {
         setRelatedJokesUser(data);
-        console.log(data);
       }
     };
     fetchRelatedJokesUser();
