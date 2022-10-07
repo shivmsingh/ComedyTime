@@ -43,6 +43,9 @@ const Header = () => {
                 <li>
                   <Link to="/create">New Joke</Link>
                 </li>
+                <li>
+                  <Link to="/leaderboard">Leaderboard</Link>
+                </li>
                 {!session ? (
                   <li>
                     <Link to="/auth">Login</Link>
@@ -70,6 +73,9 @@ const Header = () => {
             <ul className="menu menu-horizontal p-0">
               <li>
                 <Link to="/create">New Joke</Link>
+              </li>
+              <li>
+                <Link to="/leaderboard">Leaderboard</Link>
               </li>
               {!session ? (
                 <li>

@@ -7,6 +7,7 @@ import Update from "./pages/Update";
 import Joke from "./pages/Joke";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
+import LeaderBoard from "./pages/LeaderBoard";
 const {
   uniqueNamesGenerator,
   adjectives,
@@ -86,6 +87,7 @@ const App = () => {
           <Route path="/create" element={<Create />} />
           <Route path="/:id" element={<Joke />} />
           <Route path="/edit/:id" element={<Update />} />
+          <Route path="/leaderboard" element={<LeaderBoard />} />
           <Route path="/user/:username" element={<Profile />} />
           <Route path="/auth" element={<Auth />} />
         </Routes>
