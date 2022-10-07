@@ -18,6 +18,9 @@ const JokeCard = ({ joke, onDelete, displayControls }) => {
 
     if (data) {
       onDelete(joke.id);
+      const { data_one, error_one } = await supabase.rpc("decrement", {
+        row_id: session.user.id,
+      });
     }
   };
 
