@@ -23,7 +23,6 @@ const Create = () => {
 
       const { data, error } = await supabase
         .from("jokes")
-        .rpc("increment", { user_id: session.user.id })
         .insert([
           {
             title,
@@ -32,6 +31,7 @@ const Create = () => {
             user_id: session.user.id,
           },
         ])
+        .rpc("increment", { row_id: session.user.id })
         .select();
 
       if (error) {
