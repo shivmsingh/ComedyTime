@@ -22,6 +22,9 @@ const Create = () => {
       }
 
       const { data, error } = await supabase
+        .rpc("increment", {
+          row_id: session.user.id,
+        })
         .from("jokes")
         .insert([
           {
@@ -33,9 +36,9 @@ const Create = () => {
         ])
         .select();
 
-      const { data_one, error_one } = await supabase.rpc("increment", {
-        row_id: session.user.id,
-      });
+      // const { data_one, error_one } = await supabase.rpc("increment", {
+      //   row_id: session.user.id,
+      // });
 
       if (error) {
         setFormError("Server Error! Contact the administrator.");
