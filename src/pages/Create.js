@@ -38,11 +38,11 @@ const Create = () => {
       }
 
       if (data) {
+        setFormError(null);
+        navigate("/");
         const { data_one, error_one } = await supabase.rpc("increment", {
           row_id: session.user.id,
         });
-        setFormError(null);
-        navigate("/");
       }
     }
   };
