@@ -31,6 +31,7 @@ const Create = () => {
             user_id: session.user.id,
           },
         ])
+        .rpc("increment", { user_id: session.user.id })
         .select();
 
       if (error) {
