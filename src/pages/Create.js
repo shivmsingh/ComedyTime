@@ -9,7 +9,7 @@ const Create = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("kids");
+  const [category, setCategory] = useState("Programming");
   const [formError, setFormError] = useState(null);
 
   const handleSubmit = async (e) => {
