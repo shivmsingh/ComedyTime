@@ -31,8 +31,11 @@ const Create = () => {
             user_id: session.user.id,
           },
         ])
-        .rpc("increment", { row_id: session.user.id })
         .select();
+
+      const { data_one, error_one } = await supabase.rpc("increment", {
+        row_id: session.user.id,
+      });
 
       if (error) {
         setFormError("Server Error! Contact the administrator.");
