@@ -1,12 +1,13 @@
 import { useState, useEffect, useContext } from "react";
 import { supabase } from "../config/supabaseClient";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import JokeCard from "../components/JokeCard";
 import { SessionContext } from "../App";
 
 const Profile = () => {
   const [jokes, setJokes] = useState(null);
+  const navigate = useNavigate();
   const [orderBy, setOrderBy] = useState("created_at");
   const { username: user } = useParams();
   const [username, setUsername] = useState(user);
@@ -38,6 +39,9 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!username) {
+      return;
+    }
     const { data, error } = await supabase
       .from("profiles")
       .update({ username: username })
@@ -49,7 +53,7 @@ const Profile = () => {
     }
 
     if (data) {
-      console.log(data);
+      window.location.href = "https://comedytime.netlify.app/";
     }
   };
 
@@ -79,9 +83,7 @@ const Profile = () => {
                       setUsername(e.target.value);
                     }}
                   />
-                  <a href="https://comedytime.netlify.app/">
-                    <button className="btn btn-secondary">Go</button>
-                  </a>
+                  <button className="btn btn-secondary">Go</button>
                 </div>
               </div>
             </form>
