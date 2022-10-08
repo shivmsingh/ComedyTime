@@ -1,13 +1,13 @@
 import { useState, useEffect, useContext } from "react";
 import { supabase } from "../config/supabaseClient";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import JokeCard from "../components/JokeCard";
 import { SessionContext } from "../App";
 
 const Profile = () => {
   const [jokes, setJokes] = useState(null);
-  const navigate = useNavigate();
+  const [fetchError, setFetchError] = useState(null);
   const [orderBy, setOrderBy] = useState("created_at");
   const { username: user } = useParams();
   const [username, setUsername] = useState(user);
@@ -22,10 +22,12 @@ const Profile = () => {
         .order(orderBy, { ascending: false });
 
       if (error) {
+        setFetchError("Server Error!");
         setJokes(null);
       }
       if (data) {
         setJokes(data);
+        setFetchError(null);
       }
     };
     fetchJokes();
@@ -40,6 +42,7 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username) {
+      setFetchError("The username field cant be blank!");
       return;
     }
     const { data, error } = await supabase
@@ -49,16 +52,37 @@ const Profile = () => {
       .select("username");
 
     if (error) {
-      console.log(error);
+      setFetchError("Server Error!");
     }
 
     if (data) {
+      setFetchError(null);
       window.location.href = "https://comedytime.netlify.app/";
     }
   };
 
   return (
     <Layout>
+      {fetchError && (
+        <div className="alert alert-error shadow-lg">
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current flex-shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{fetchError}</span>
+          </div>
+        </div>
+      )}
       {jokes && (
         <main>
           <h1 className="font-bold text-3xl my-10">
@@ -114,9 +138,11 @@ const Profile = () => {
           </div>
           <div className="flex flex-wrap">
             {jokes.map((joke) => (
-              <div className="lg:w-1/3 md:w-1/2 w-full flex flex-col p-5">
+              <div
+                key={joke.id}
+                className="lg:w-1/3 md:w-1/2 w-full flex flex-col p-5"
+              >
                 <JokeCard
-                  key={joke.id}
                   joke={joke}
                   onDelete={handleDelete}
                   displayControls={true}
