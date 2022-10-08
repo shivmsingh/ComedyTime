@@ -10,7 +10,7 @@ const Profile = () => {
   const [orderBy, setOrderBy] = useState("created_at");
   const { username: user } = useParams();
   const [username, setUsername] = useState(user);
-  const { id } = useContext(SessionContext);
+  const { id, username: check } = useContext(SessionContext);
 
   useEffect(() => {
     const fetchJokes = async () => {
@@ -60,22 +60,33 @@ const Profile = () => {
           <h1 className="font-bold text-3xl my-10">
             <span className="text-accent">{user}</span>'s Jokes
           </h1>
-          <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col">
-            <div className="form-control flex flex-row justify-end">
-              <div className="input-group">
-                <input
-                  type="text"
-                  placeholder="username"
-                  value={username}
-                  className="input input-bordered"
-                  onChange={(e) => {
-                    setUsername(e.target.value);
-                  }}
-                />
-                <button className="btn btn-square">Go</button>
+          {check === user && (
+            <form
+              onSubmit={(e) => handleSubmit(e)}
+              className="flex flex-col items-end justify-end"
+            >
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text text-lg">Change Username: </span>
+                </label>
+                <div className="input-group sm:mx-3">
+                  <input
+                    type="text"
+                    placeholder="username"
+                    value={username}
+                    className="input input-bordered"
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
+                  />
+                  <a href="https://comedytime.netlify.app/">
+                    <button className="btn btn-secondary">Go</button>
+                  </a>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
+          )}
+
           <div className="flex flex-col items-center justify-center">
             <h2 className="text-xl font-bold py-3">Order By:</h2>
             <div className="btn-group">
